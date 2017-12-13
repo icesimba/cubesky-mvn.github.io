@@ -1,19 +1,81 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>CubeSky Maven Repo</title>
-	<link rel="stylesheet" href="css/mdui.min.css">
-	<script src="js/mdui.min.js"></script>
+    <meta charset="utf-8">
+    <title>CubeSky Maven Repo</title>
+    <link rel="stylesheet" href="css/mdui.min.css">
+    <script src="js/mdui.min.js"></script>
+    <style type="text/css">
+    pre {
+        font-family: "Courier 10 Pitch", Courier, monospace;
+        font-size: 95%;
+        line-height: 140%;
+        white-space: pre;
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -o-pre-wrap;
+    }       
+    
+    code {
+        font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
+        font-size: 95%;
+        line-height: 140%;
+        white-space: pre;
+        white-space: pre-wrap;
+        white-space: -moz-pre-wrap;
+        white-space: -o-pre-wrap;
+    }
+    
+    #content code {
+        display: block;
+        padding: 0.5em 1em;
+        border: 1px solid #bebab0;
+    }
+    </style>
 </head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-purple mdui-color-grey-200">
-	<div class="mdui-toolbar mdui-color-theme">
-		<span class="mdui-typo-title">CubeSky Maven Repo</span>
-		<div class="mdui-toolbar-spacer"></div>
-	</div>
+    <div class="mdui-toolbar mdui-color-theme">
+        <span class="mdui-typo-title">CubeSky Maven Repo</span>
+        <div class="mdui-toolbar-spacer"></div>
+    </div>
 
-	<div class="mdui-container mdui-appbar-with-toolbar">
-		This is a site for cubesky maven repo.
-	</div>
+    <div class="mdui-container mdui-appbar-with-toolbar">
+    	<div class="mdui-row">
+      <div class="mdui-col-xs-12">
+        <div class="mdui-card">
+          <div class="mdui-card-content">
+          <h1>Gradle</h1>
+          <div class="mdui-typo">
+          <pre><code>
+repositories {
+    maven {
+        url 'https://cubesky-mvn.github.io'
+    }
+}</code></pre>
+      </div>
+        </div>
+      </div>
+  </div>
+  </div>
+  <div class="mdui-row">
+      <div class="mdui-col-xs-12">
+      <div class="mdui-card">
+        <div class="mdui-card-content">
+        <h1>Maven</h1>
+        <div class="mdui-typo">
+<pre><code>
+&lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;cubesky-mvn&lt;/id&gt;
+    &lt;name&gt;CubeSkyMVN&lt;/name&gt;
+    &lt;url&gt;https://cubesky-mvn.github.io&lt;/url&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt; </code></pre>
+      </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
 </body>
 </html>
