@@ -51,7 +51,12 @@ repositories {
     maven {
         url 'https://cubesky-mvn.github.io'
     }
-}</code></pre>
+}
+
+dependencies {
+    compile group: '${Group}', name: '${Name}', version: '${Version}'
+}
+        </code></pre>
       </div>
         </div>
       </div>
@@ -70,12 +75,49 @@ repositories {
     &lt;name&gt;CubeSkyMVN&lt;/name&gt;
     &lt;url&gt;https://cubesky-mvn.github.io&lt;/url&gt;
   &lt;/repository&gt;
-&lt;/repositories&gt; </code></pre>
+&lt;/repositories&gt; 
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;${Group}&lt;/groupId&gt;
+        &lt;artifactId&gt;${Name}&lt;/artifactId&gt;
+        &lt;version&gt;${Version}&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
+</code></pre>
       </div>
         </div>
       </div>
     </div>
     </div>
+    <hr>
+    <div class="mdui-row">
+      <div class="mdui-col-xs-12">
+        <div class="mdui-card">
+          <div class="mdui-card-content">
+          <h1>Supported Library</h1>
+          <table class="mdui-table">
+            <thead>
+              <tr>
+                <th>Group</th>
+                <th>Name</th>
+                <th>Latest Version</th>
+                <th>Effect</th>
+              </tr>
+              <tbody>
+                <tr>
+                  <td>party.liyin</td>
+                  <td>socketchannel</td>
+                  <td>1.0</td>
+                  <td>Use for easy network transport</td>
+                </tr>
+              </tbody>
+            </thead>
+          </table>
+        </div>
+      </div>
+  </div>
+  </div>
   </div>
 </body>
 </html>
