@@ -112,6 +112,7 @@ dependencies {
                 <th>Name</th>
                 <th>Latest Version</th>
                 <th>Description</th>
+                <th>Home Page</th>
                 <th>Maven</th>
                 <th>Gradle</th>
               </tr>
@@ -129,15 +130,16 @@ dependencies {
       const template=`
       <tr>
         <td>{group}</td>
-        <td><a href="{url}">{name}</a></td>
+        <td>{name}</td>
         <td>
-          <select class="mdui-select" mdui-select>
+          <select class="mdui-select" mdui-select data-lid="{lid}" data-name="{vname}" data-group="{vgroup}">
             {versions}
           </select>
         </td>
         <td>{description}</td>
-        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{maven}"><i class="mdui-icon material-icons">content_copy</i></button></td>
-        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{gradle}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+        <td><a target="_black" href="{url}">{source}<i class="mdui-icon material-icons mdui-text-color-black-icon">open_in_new</i></a></td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{maven}" id="lib-maven-{mlid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{gradle}" id="lib-gradle-{glid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
       </tr>
       `;
       const template_version = `<option {def}>{version}</option>`;
@@ -167,7 +169,7 @@ repositories {
     }
 }
 `;
-      const dataStore = [{group: 'party.liyin', name: 'socketchannel', url: 'https://github.com/cubesky/SocketChannel', description: 'Easy TCP/UDP transport', version: ['1.0', '2.0']}];
+      const dataStore = [{group: 'party.liyin', name: 'socketchannel', url: 'https://github.com/cubesky/SocketChannel', description: 'Easy TCP/UDP transport', source: 'Github', version: ['1.0', '2.0']}];
 
 
       $$('#maven-install')[0].setAttribute('data-clipboard-text',maven_repo);
@@ -188,7 +190,7 @@ repositories {
           }
           var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
           var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-          $$('#library-list')[0].innerHTML += (template.replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{name}', data.name).replace('{description}', data.description).replace('{gradle}', gradle).replace('{maven}', maven));
+          $$('#library-list')[0].innerHTML += (template.replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{vgroup}', data.group).replace('{name}', data.name).replace('{vname}', data.name).replace('{description}', data.description).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{lid}',i).replace('{glid}',i).replace('{mlid}',i));
       }
 
       var clipboard = new Clipboard('.btncopy');
@@ -200,6 +202,18 @@ repositories {
       clipboard.on('error', function(e) {
         mdui.snackbar({ message: '无法复制', position: 'right-top',  timeout: 2500 });
       });
+
+      $$('.mdui-select').on('closed.mdui.select',function(target){
+        console.log(target);
+        var lid = target.target.dataset.lid;
+        var name = target.target.dataset.name;
+        var group = target.target.dataset.group;
+        var version = target.target.value;
+        var gradle = template_gradle.replace('{group}', group).replace('{name}', name).replace('{version}', version);
+        var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version);
+        $$('#lib-gradle-' + lid)[0].setAttribute('data-clipboard-text',gradle);
+        $$('#lib-maven-' + lid)[0].setAttribute('data-clipboard-text',maven);
+      })
   </script>
 </body>
 </html>
