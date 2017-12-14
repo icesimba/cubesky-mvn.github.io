@@ -5,39 +5,13 @@
     <title>CubeSky Repo</title>
     <link rel="stylesheet" href="css/mdui.min.css">
     <script src="js/mdui.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
-    <style type="text/css">
-    pre {
-        font-family: "Courier 10 Pitch", Courier, monospace;
-        font-size: 95%;
-        line-height: 140%;
-        white-space: pre;
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -o-pre-wrap;
-    }       
+    <script src="js/clipboard.min.js"></script>
     
-    code {
-        font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
-        font-size: 95%;
-        line-height: 140%;
-        white-space: pre;
-        white-space: pre-wrap;
-        white-space: -moz-pre-wrap;
-        white-space: -o-pre-wrap;
-    }
-    
-    #content code {
-        display: block;
-        padding: 0.5em 1em;
-        border: 1px solid #bebab0;
-    }
-    </style>
 </head>
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-color-grey-200 mdui-appbar-with-toolbar mdui-appbar-with-tab">
   <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-scroll-toolbar-hide">
     <div class="mdui-toolbar mdui-color-theme">
-        <span class="mdui-typo-title">CubeSky Maven Repo</span>
+        <span class="mdui-typo-title">CubeSky Repo</span>
         <div class="mdui-toolbar-spacer"></div>
     </div>
     <div class="mdui-tab mdui-color-theme mdui-tab-centered" mdui-tab>
@@ -45,7 +19,6 @@
       <a href="#tab-library" class="mdui-ripple mdui-ripple-white">Library</a>
     </div>
   </div>
-
     <div class="mdui-container mdui-appbar-with-toolbar">
       <div id="tab-config">
         <div class="mdui-row">
@@ -55,17 +28,17 @@
           <h1>Gradle</h1>
           <div class="mdui-typo">
           <pre><code>
-repositories {
+repositories {<span class="mdui-text-color-deep-orange">
     maven {
         url 'https://cubesky-mvn.github.io'
-    }
+    }</span>
 }
 
-dependencies {
-    compile group: '${Group}', name: '${Name}', version: '${Version}'
+dependencies {<span class="mdui-text-color-deep-orange">
+    compile group: '${Group}', name: '${Name}', version: '${Version}'</span>
 }
         </code></pre>
-        <button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="gradle-install" data-clipboard-action="copy" data-clipboard-text><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> 复制</button>
+        <button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="gradle-install" data-clipboard-action="copy" data-clipboard-text mdui-tooltip="{ content:'Copy Gradle Config', delay: 600 }"><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> Copy</button>
       </div>
         </div>
       </div>
@@ -78,23 +51,23 @@ dependencies {
         <h1>Maven</h1>
         <div class="mdui-typo">
 <pre><code>
-&lt;repositories&gt;
+&lt;repositories&gt;<span class="mdui-text-color-deep-orange">
   &lt;repository&gt;
     &lt;id&gt;cubesky-mvn&lt;/id&gt;
     &lt;name&gt;CubeSkyMVN&lt;/name&gt;
     &lt;url&gt;https://cubesky-mvn.github.io&lt;/url&gt;
-  &lt;/repository&gt;
+  &lt;/repository&gt;</span>
 &lt;/repositories&gt; 
 
-&lt;dependencies&gt;
+&lt;dependencies&gt;<span class="mdui-text-color-deep-orange">
     &lt;dependency&gt;
         &lt;groupId&gt;${Group}&lt;/groupId&gt;
         &lt;artifactId&gt;${Name}&lt;/artifactId&gt;
         &lt;version&gt;${Version}&lt;/version&gt;
-    &lt;/dependency&gt;
+    &lt;/dependency&gt;</span>
 &lt;/dependencies&gt;
 </code></pre>
-<button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="maven-install" data-clipboard-action="copy" data-clipboard-text><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> 复制</button>
+<button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="maven-install" data-clipboard-action="copy" data-clipboard-text mdui-tooltip="{ content:'Copy Maven Config', delay: 600 }"><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> Copy</button>
               </div>
             </div>
           </div>
@@ -125,8 +98,22 @@ dependencies {
     </div>
   </div>
   <br>
+  <div class="hidden-dialog">
+    <div class="mdui-dialog" id="copy-dialog">
+      <div class="mdui-container">
+      <h2>Your browser can not use auto copy.</h2>
+      <label>You can copy it by your self.</label>
+      <div class="mdui-textfield">
+        <textarea class="mdui-textfield-input" type="text" placeholder="Gradle / Maven" readonly id="manual-copy"></textarea>
+      </div>
+      <button class="mdui-btn mdui-color-theme-accent" onclick="copyManuallyClose()">Close</button>
+    </div>
+    <br>
+    </div>
+  </div>
   <script type="text/javascript">
-        var $$ = mdui.JQ;
+      var $$ = mdui.JQ;
+      var copyDialog = new mdui.Dialog('#copy-dialog', {});
       const template=`
       <tr>
         <td>{group}</td>
@@ -137,36 +124,30 @@ dependencies {
           </select>
         </td>
         <td>{description}</td>
-        <td><a target="_black" href="{url}">{source}<i class="mdui-icon material-icons mdui-text-color-black-icon">open_in_new</i></a></td>
-        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{maven}" id="lib-maven-{mlid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
-        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{gradle}" id="lib-gradle-{glid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+        <td><a target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page', delay: 600 }">{source}<i class="mdui-icon material-icons mdui-text-color-black-icon">open_in_new</i></a></td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" mdui-tooltip="{ content:'Copy Maven Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{maven}" id="lib-maven-{mlid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" mdui-tooltip="{ content:'Copy Gradle Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{gradle}" id="lib-gradle-{glid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
       </tr>
       `;
       const template_version = `<option {def}>{version}</option>`;
       const template_maven = `
-<dependencies>
   <dependency>
     <groupId>{group}</groupId>
     <artifactId>{name}</artifactId>
     <version>{version}</version>
   </dependency>
-</dependencies>
 `;
       const template_gradle = `compile group: '{group}', name: '{name}', version: '{version}'`;
       const maven_repo = `
-<repositories>
   <repository>
     <id>cubesky-mvn</id>
     <name>CubeSkyMVN</name>
     <url>https://cubesky-mvn.github.io</url>
   </repository>
-</repositories>
 `;
       const gradle_repo = `
-repositories {
-    maven {
-        url 'https://cubesky-mvn.github.io'
-    }
+maven {
+    url 'https://cubesky-mvn.github.io'
 }
 `;
       const dataStore = [
@@ -181,8 +162,8 @@ repositories {
           var data = dataStore[i];
           var version = '';
           var latest = '';
-          for (var i = 0; i < data.version.length; i++) {
-            var ver = data.version[i];
+          for (var iv = data.version.length - 1 ; iv >= 0; iv--) {
+            var ver = data.version[iv];
             var def = '';
             if (i == data.version.length - 1){
               def = 'selected';
@@ -195,18 +176,7 @@ repositories {
           $$('#library-list')[0].innerHTML += (template.replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{vgroup}', data.group).replace('{name}', data.name).replace('{vname}', data.name).replace('{description}', data.description).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{lid}',i).replace('{glid}',i).replace('{mlid}',i));
       }
 
-      var clipboard = new Clipboard('.btncopy');
-      clipboard.on('success', function(e) {
-        mdui.snackbar({ message: '已复制', position: 'right-top', timeout: 2500 });
-        e.clearSelection();
-      });
-
-      clipboard.on('error', function(e) {
-        mdui.snackbar({ message: '无法复制', position: 'right-top',  timeout: 2500 });
-      });
-
       $$('.mdui-select').on('closed.mdui.select',function(target){
-        console.log(target);
         var lid = target.target.dataset.lid;
         var name = target.target.dataset.name;
         var group = target.target.dataset.group;
@@ -215,7 +185,27 @@ repositories {
         var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version);
         $$('#lib-gradle-' + lid)[0].setAttribute('data-clipboard-text',gradle);
         $$('#lib-maven-' + lid)[0].setAttribute('data-clipboard-text',maven);
-      })
+      });
+
+    function copyManually(data) {
+      $$('#manual-copy').val(data);
+      copyDialog.open();
+    }
+
+    function copyManuallyClose(){
+      copyDialog.close();
+    }
+
+    var clipboard = new Clipboard('.btncopy');
+    clipboard.on('success', function(e) {
+      mdui.snackbar({ message: 'Copied', position: 'right-top', timeout: 2500 });
+      e.clearSelection();
+    });
+
+    clipboard.on('error', function(e) {
+      mdui.snackbar({ message: 'Can not copy on your browser', position: 'right-top',  timeout: 2500 });
+      copyManually(e.trigger.dataset.clipboardText);
+    });
   </script>
 </body>
 </html>
