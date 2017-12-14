@@ -5,6 +5,7 @@
     <title>CubeSky Maven Repo</title>
     <link rel="stylesheet" href="css/mdui.min.css">
     <script src="js/mdui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
     <style type="text/css">
     pre {
         font-family: "Courier 10 Pitch", Courier, monospace;
@@ -33,7 +34,7 @@
     }
     </style>
 </head>
-<body class="mdui-theme-primary-indigo mdui-theme-accent-purple mdui-color-grey-200 mdui-appbar-with-toolbar mdui-appbar-with-tab">
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-color-grey-200 mdui-appbar-with-toolbar mdui-appbar-with-tab">
   <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-hide mdui-appbar-scroll-toolbar-hide">
     <div class="mdui-toolbar mdui-color-theme">
         <span class="mdui-typo-title">CubeSky Maven Repo</span>
@@ -47,7 +48,7 @@
 
     <div class="mdui-container mdui-appbar-with-toolbar">
       <div id="tab-config">
-    	<div class="mdui-row">
+        <div class="mdui-row">
       <div class="mdui-col-xs-12">
         <div class="mdui-card">
           <div class="mdui-card-content">
@@ -64,6 +65,7 @@ dependencies {
     compile group: '${Group}', name: '${Name}', version: '${Version}'
 }
         </code></pre>
+        <button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="gradle-install" data-clipboard-action="copy" data-clipboard-text><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> 复制</button>
       </div>
         </div>
       </div>
@@ -92,6 +94,7 @@ dependencies {
     &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </code></pre>
+<button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="maven-install" data-clipboard-action="copy" data-clipboard-text><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> 复制</button>
               </div>
             </div>
           </div>
@@ -109,19 +112,10 @@ dependencies {
                 <th>Name</th>
                 <th>Latest Version</th>
                 <th>Description</th>
+                <th>Maven</th>
+                <th>Gradle</th>
               </tr>
-              <tbody>
-                <tr>
-                  <td>party.liyin</td>
-                  <td><a href="https://github.com/cubesky/SocketChannel">socketchannel</a></td>
-                  <td>
-                    <select class="mdui-select" mdui-select>
-                      <option>1.0</option>
-                      <option selected>2.0</option>
-                    </select>
-                  </td>
-                  <td>Easy TCP/UDP transport</td>
-                </tr>
+              <tbody id="library-list">
               </tbody>
             </thead>
           </table>
@@ -130,5 +124,82 @@ dependencies {
     </div>
   </div>
   <br>
+  <script type="text/javascript">
+        var $$ = mdui.JQ;
+      const template=`
+      <tr>
+        <td>{group}</td>
+        <td><a href="{url}">{name}</a></td>
+        <td>
+          <select class="mdui-select" mdui-select>
+            {versions}
+          </select>
+        </td>
+        <td>{description}</td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{maven}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+        <td><button class="btncopy mdui-btn mdui-btn-icon" data-clipboard-action="copy" data-clipboard-text="{gradle}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+      </tr>
+      `;
+      const template_version = `<option {def}>{version}</option>`;
+      const template_maven = `
+<dependencies>
+  <dependency>
+    <groupId>{group}</groupId>
+    <artifactId>{name}</artifactId>
+    <version>{version}</version>
+  </dependency>
+</dependencies>
+`;
+      const template_gradle = `compile group: '{group}', name: '{name}', version: '{version}'`;
+      const maven_repo = `
+<repositories>
+  <repository>
+    <id>cubesky-mvn</id>
+    <name>CubeSkyMVN</name>
+    <url>https://cubesky-mvn.github.io</url>
+  </repository>
+</repositories>
+`;
+      const gradle_repo = `
+repositories {
+    maven {
+        url 'https://cubesky-mvn.github.io'
+    }
+}
+`;
+      const dataStore = [{group: 'party.liyin', name: 'socketchannel', url: 'https://github.com/cubesky/SocketChannel', description: 'Easy TCP/UDP transport', version: ['1.0', '2.0']}];
+
+
+      $$('#maven-install')[0].setAttribute('data-clipboard-text',maven_repo);
+      $$('#gradle-install')[0].setAttribute('data-clipboard-text',gradle_repo);
+
+      for (var i = 0; i < dataStore.length; i++) {
+          var data = dataStore[i];
+          var version = '';
+          var latest = '';
+          for (var i = 0; i < data.version.length; i++) {
+            var ver = data.version[i];
+            var def = '';
+            if (i == data.version.length - 1){
+              def = 'selected';
+              latest = ver;
+            }
+            version += template_version.replace('{version}', ver).replace('{def}',def);
+          }
+          var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
+          var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
+          $$('#library-list')[0].innerHTML += (template.replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{name}', data.name).replace('{description}', data.description).replace('{gradle}', gradle).replace('{maven}', maven));
+      }
+
+      var clipboard = new Clipboard('.btncopy');
+      clipboard.on('success', function(e) {
+        mdui.snackbar({ message: '已复制', position: 'right-top', timeout: 2500 });
+        e.clearSelection();
+      });
+
+      clipboard.on('error', function(e) {
+        mdui.snackbar({ message: '无法复制', position: 'right-top',  timeout: 2500 });
+      });
+  </script>
 </body>
 </html>
