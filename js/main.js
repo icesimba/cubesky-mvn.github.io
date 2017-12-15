@@ -130,6 +130,7 @@ $$('.mdui-select').on('closed.mdui.select', function(target) {
 
 function copyManually(data) {
     $$('#manual-copy').val(data);
+    mdui.updateTextFields();
     copyDialog.open();
 }
 
