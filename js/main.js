@@ -6,15 +6,24 @@ const template = `
       <td>{group}</td>
       <td>{name}</td>
       <td>
-        <select class="mdui-select" mdui-select name="select-ver-{sid}" data-lid="{lid}" data-name="{vname}" data-group="{vgroup}">
+        <select class="mdui-select" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
           {versions}
         </select>
       </td>
       <td>{description}</td>
-      <td><a target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page', delay: 600 }">{source}<i class="mdui-icon material-icons mdui-text-color-black-icon">open_in_new</i></a></td>
-      <td><a target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}', delay: 600 }">{license-name}<i class="mdui-icon material-icons mdui-text-color-black-icon">open_in_new</i></a></td>
-      <td><button class="btncopy mdui-btn mdui-btn-icon" mdui-tooltip="{ content:'Copy Maven Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{mlid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
-      <td><button class="btncopy mdui-btn mdui-btn-icon" mdui-tooltip="{ content:'Copy Gradle Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{glid}"><i class="mdui-icon material-icons">content_copy</i></button></td>
+      <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
+      <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a></td>
+      <td class="mdui-p-l-1">
+        <button class="mdui-btn mdui-btn-dense mdui-ripple mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-list-id-{id}', position: 'top', align: 'right'}">Copy</button>
+        <ul class="mdui-menu" id="menu-list-id-{id}">
+          <li class="mdui-menu-item">
+            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
+          </li>
+          <li class="mdui-menu-item">
+            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{id}">Gradle</button>
+          </li>
+        </ul>
+      </td>
     </tr>
     `;
 const template_sm = `
@@ -28,17 +37,26 @@ const template_sm = `
       <div><strong>Name: </strong>{name}</div>
       <div>
         <strong>Version: </strong>
-        <select class="mdui-select" mdui-select name="select-ver-sm-{sid}" data-lid="{lid}" data-name="{vname}" data-group="{vgroup}">
+        <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
           {versions}
         </select>
       </div>
       <div><strong>Description: </strong>{description}</div>
     </div>
     <div class="mdui-card-actions">
-      <a class="mdui-btn mdui-ripple" target="_blank" href="{url}">{source}</a>
-      <a class="mdui-btn mdui-ripple" target="_blank" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}', delay: 600 }">{license-name}</a>
-      <button class="btncopy mdui-btn" mdui-tooltip="{ content:'Copy Maven Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{mlid}">Copy Maven</button>
-      <button class="btncopy mdui-btn" mdui-tooltip="{ content:'Copy Gradle Dependency', delay: 600 }" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{glid}">Copy Gradle</button>
+      <div class="mdui-row">
+        <a class="mdui-btn mdui-ripple mdui-m-l-1" target="_blank" href="{url}" mdui-tooltip="{ content:'Go To Project' }">{source}</a>
+        <a class="mdui-btn mdui-ripple" target="_blank" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a>
+        <button class="mdui-btn mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-id-{id}', position: 'top', align: 'right'}">Copy</button>
+        <ul class="mdui-menu" id="menu-id-{id}">
+          <li class="mdui-menu-item">
+            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
+          </li>
+          <li class="mdui-menu-item">
+            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{id}">Gradle</button>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
@@ -74,6 +92,10 @@ const dataStore = [{
     license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
     version: ['1.0', '2.0', '2.1']
 }];
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
 $$('#maven-install')[0].setAttribute('data-clipboard-text', maven_repo);
 $$('#gradle-install')[0].setAttribute('data-clipboard-text', gradle_repo);
 for (var i = 0; i < dataStore.length; i++) {
@@ -86,24 +108,24 @@ for (var i = 0; i < dataStore.length; i++) {
     }
     var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
     var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{vgroup}', data.group).replace('{name}', data.name).replace('{vname}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{sid}', i).replace('{lid}', i).replace('{glid}', i).replace('{mlid}', i));
-    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replace('{url}', data.url).replace('{group}', data.group).replace('{vgroup}', data.group).replace('{name}', data.name).replace('{vname}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{sid}', i).replace('{lid}', i).replace('{glid}', i).replace('{mlid}', i))
+    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replaceAll('{id}', i));
+    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replaceAll('{id}', i));
 }
 $$('.mdui-select').on('closed.mdui.select', function(target) {
-    var lid = target.target.dataset.lid;
+    var id = target.target.dataset.id;
     var name = target.target.dataset.name;
     var group = target.target.dataset.group;
     var version = target.target.value;
-    $$('[name=select-ver-sm-' + lid + ']').val(version);
-    $$('[name=select-ver-' + lid + ']').val(version);
-    new mdui.Select('[name=select-ver-' + lid + ']', {}).handleUpdate();
-    new mdui.Select('[name=select-ver-sm-' + lid + ']', {}).handleUpdate();
+    $$('[name=select-ver-sm-' + id + ']').val(version);
+    $$('[name=select-ver-' + id + ']').val(version);
+    new mdui.Select('[name=select-ver-' + id + ']', {}).handleUpdate();
+    new mdui.Select('[name=select-ver-sm-' + id + ']', {}).handleUpdate();
     var gradle = template_gradle.replace('{group}', group).replace('{name}', name).replace('{version}', version);
     var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version);
-    $$('[name=lib-gradle-' + lid + ']')[0].setAttribute('data-clipboard-text', gradle);
-    $$('[name=lib-gradle-' + lid + ']')[1].setAttribute('data-clipboard-text', gradle);
-    $$('[name=lib-maven-' + lid + ']')[0].setAttribute('data-clipboard-text', maven);
-    $$('[name=lib-maven-' + lid + ']')[1].setAttribute('data-clipboard-text', maven);
+    $$('[name=lib-gradle-' + id + ']')[0].setAttribute('data-clipboard-text', gradle);
+    $$('[name=lib-gradle-' + id + ']')[1].setAttribute('data-clipboard-text', gradle);
+    $$('[name=lib-maven-' + id + ']')[0].setAttribute('data-clipboard-text', maven);
+    $$('[name=lib-maven-' + id + ']')[1].setAttribute('data-clipboard-text', maven);
 });
 
 function copyManually(data) {
