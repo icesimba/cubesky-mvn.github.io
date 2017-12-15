@@ -131,18 +131,18 @@ dependencies {<span class="mdui-text-color-deep-orange">
       </div>
     </div>
     <button class="mdui-fab mdui-fab-fixed mdui-ripple mdui-color-theme-accent mdui-fab-hide" id="back-to-top" onclick="toTop()"><i class="mdui-icon material-icons">arrow_upward</i></button>
-    <div class="hidden-dialog">
-      <div class="mdui-dialog" id="copy-dialog">
-        <div class="mdui-container mdui-m-b-2">
-          <div class="mdui-row">
-            <h2>Your browser can not use auto copy.</h2>
-            <label>You can copy it by your self.</label>
-            <div class="mdui-textfield">
-              <textarea class="mdui-textfield-input" type="text" placeholder="Gradle / Maven" readonly id="manual-copy"></textarea>
-            </div>
-            <button class="mdui-btn mdui-color-theme-accent" onclick="copyManuallyClose()">Close</button>
+    <div class="mdui-dialog" id="copy-dialog">
+      <div class="mdui-dialog-content" id="dialog-content">
+        <div class="mdui-row">
+          <div class="mdui-dialog-title">Your browser can not use auto copy.</div>
+          <label>You can copy it by your self.</label>
+          <div class="mdui-textfield">
+            <textarea class="mdui-textfield-input" type="text" placeholder="Gradle / Maven" readonly id="manual-copy" row=7></textarea>
           </div>
         </div>
+      </div>
+      <div class="mdui-dialog-actions">
+        <button class="mdui-btn mdui-color-theme-accent" onclick="copyManuallyClose()">Close</button>
       </div>
     </div>
     <script src="js/mdui.min.js"></script>

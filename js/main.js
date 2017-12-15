@@ -1,5 +1,7 @@
 var $$ = mdui.JQ;
 var copyDialog = new mdui.Dialog('#copy-dialog', {});
+copyManually('\n\n\n\n\n\n\n');
+copyManuallyClose();
 const template = `
     <tr>
       <td>{project}</td>
@@ -129,9 +131,14 @@ $$('.mdui-select').on('closed.mdui.select', function(target) {
 });
 
 function copyManually(data) {
+    copyDialog.open();
     $$('#manual-copy').val(data);
     mdui.updateTextFields();
-    copyDialog.open();
+    $$('#dialog-content')[0].scroll({
+      top: 0, 
+      left: 0, 
+      behavior: 'smooth' 
+    });
 }
 
 function copyManuallyClose() {
