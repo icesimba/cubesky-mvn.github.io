@@ -1,7 +1,11 @@
 var $$ = mdui.JQ;
-var copyDialog = new mdui.Dialog('#copy-dialog', {});
-copyManually('\n\n\n\n\n\n\n');
-copyManuallyClose();
+var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
+document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', function () {
+    mdui.updateTextFields();
+    copyDialog.handleUpdate();
+});
+copyDialog.open();
+copyDialog.close();
 const template = `
     <tr>
       <td>{project}</td>
@@ -64,26 +68,20 @@ const template_sm = `
 </div>
 `;
 const template_version = `<option>{version}</option>`;
-const template_maven = `
-<dependency>
+const template_maven = `<dependency>
   <groupId>{group}</groupId>
   <artifactId>{name}</artifactId>
   <version>{version}</version>
-</dependency>
-`;
+</dependency>`;
 const template_gradle = `compile group: '{group}', name: '{name}', version: '{version}'`;
-const maven_repo = `
-<repository>
+const maven_repo = `<repository>
   <id>cubesky-mvn</id>
   <name>CubeSkyMVN</name>
   <url>https://cubesky-mvn.github.io</url>
-</repository>
-`;
-const gradle_repo = `
-maven {
+</repository>`;
+const gradle_repo = `maven {
   url 'https://cubesky-mvn.github.io'
-}
-`;
+}`;
 const dataStore = [{
     project: 'SocketChannel',
     group: 'party.liyin',
@@ -133,7 +131,6 @@ $$('.mdui-select').on('closed.mdui.select', function(target) {
 function copyManually(data) {
     copyDialog.open();
     $$('#manual-copy').val(data);
-    mdui.updateTextFields();
     $$('#dialog-content')[0].scroll({
       top: 0, 
       left: 0, 
