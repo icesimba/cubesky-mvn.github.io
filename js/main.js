@@ -1,11 +1,9 @@
 var $$ = mdui.JQ;
 var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
 document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', function () {
-    mdui.updateTextFields();
-    copyDialog.handleUpdate();
+  $$('#manual-copy')[0].style.height = '80%';
+  copyDialog.handleUpdate();
 });
-copyDialog.open();
-copyDialog.close();
 const template = `
     <tr>
       <td>{project}</td>
