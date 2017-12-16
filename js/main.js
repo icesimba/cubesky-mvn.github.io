@@ -1,9 +1,22 @@
-var $$ = mdui.JQ;
-var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
-document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', function () {
-  $$('#manual-copy')[0].style.height = '80%';
-  copyDialog.handleUpdate();
-});
+const dataStore = [{
+    project: 'Socket Channel',
+    group: 'party.liyin',
+    name: 'socketchannel',
+    url: 'https://github.com/cubesky/SocketChannel',
+    description: 'Easy TCP/UDP transport',
+    source: 'Github',
+    license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
+    version: ['1.0', '2.0', '2.1']
+},{
+    project: 'Gobang Board',
+    group: 'party.liyin',
+    name: 'gobangboard',
+    url: 'https://github.com/cubesky/GobangBoard',
+    description: 'A gobang game board management library written in Kotlin',
+    source: 'Github',
+    license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
+    version: ['1.0']
+}];
 const template = `
     <tr>
       <td>{project}</td>
@@ -66,6 +79,7 @@ const template_sm = `
 </div>
 `;
 const template_version = `<option>{version}</option>`;
+const template_version_disabled = `<option disabled>Nope</option>`;
 const template_maven = `<dependency>
   <groupId>{group}</groupId>
   <artifactId>{name}</artifactId>
@@ -80,16 +94,12 @@ const maven_repo = `<repository>
 const gradle_repo = `maven {
   url 'https://cubesky-mvn.github.io'
 }`;
-const dataStore = [{
-    project: 'SocketChannel',
-    group: 'party.liyin',
-    name: 'socketchannel',
-    url: 'https://github.com/cubesky/SocketChannel',
-    description: 'Easy TCP/UDP transport',
-    source: 'Github',
-    license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
-    version: ['1.0', '2.0', '2.1']
-}];
+var $$ = mdui.JQ;
+var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
+document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', function () {
+  $$('#manual-copy')[0].style.height = '80%';
+  copyDialog.handleUpdate();
+});
 String.prototype.replaceAll = function(search, replacement) {
     var target = this;
     return target.split(search).join(replacement);
@@ -104,6 +114,7 @@ for (var i = 0; i < dataStore.length; i++) {
         var ver = data.version[iv];
         version += template_version.replace('{version}', ver);
     }
+    if (data.version.length < 2) version += template_version_disabled;
     var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
     var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
     $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replaceAll('{id}', i));
