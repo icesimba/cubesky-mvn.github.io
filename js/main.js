@@ -23,11 +23,11 @@ const template = `
       <td>{group}</td>
       <td>{name}</td>
       <td>
-        <div class="{disabled}">
+        <span class="{disabled}">
           <select class="mdui-select {disabled}" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
             {versions}
           </select>
-        </div>
+        </span>
         {latest}
       </td>
       <td>{description}</td>
@@ -57,11 +57,11 @@ const template_sm = `
       <div><strong>Name: </strong>{name}</div>
       <div>
         <strong>Version: </strong>
-        <div class="{disabled}">
+        <span class="{disabled}">
           <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
             {versions}
           </select>
-        </div>
+        </span>
         {latest}
       </div>
       <div><strong>Description: </strong>{description}</div>
