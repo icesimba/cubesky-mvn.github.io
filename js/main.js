@@ -23,9 +23,12 @@ const template = `
       <td>{group}</td>
       <td>{name}</td>
       <td>
-        <select class="mdui-select" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
-          {versions}
-        </select>
+        <div class="{disabled}">
+          <select class="mdui-select {disabled}" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
+            {versions}
+          </select>
+        </div>
+        {latest}
       </td>
       <td>{description}</td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
@@ -44,7 +47,7 @@ const template = `
     </tr>
     `;
 const template_sm = `
-<div class="mdui-row">
+<div class="mdui-row mdui-m-b-2">
   <div class="mdui-card">
     <div class="mdui-card-primary">
       <div class="mdui-card-primary-title">{project}</div>
@@ -54,9 +57,12 @@ const template_sm = `
       <div><strong>Name: </strong>{name}</div>
       <div>
         <strong>Version: </strong>
-        <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
-          {versions}
-        </select>
+        <div class="{disabled}">
+          <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
+            {versions}
+          </select>
+        </div>
+        {latest}
       </div>
       <div><strong>Description: </strong>{description}</div>
     </div>
@@ -79,7 +85,6 @@ const template_sm = `
 </div>
 `;
 const template_version = `<option>{version}</option>`;
-const template_version_disabled = `<option disabled>Nope</option>`;
 const template_maven = `<dependency>
   <groupId>{group}</groupId>
   <artifactId>{name}</artifactId>
@@ -109,16 +114,21 @@ $$('#gradle-install')[0].setAttribute('data-clipboard-text', gradle_repo);
 for (var i = 0; i < dataStore.length; i++) {
     var data = dataStore[i];
     var version = '';
+    var disabled = '';
+    var disabled_replace = '';
     var latest = data.version[data.version.length - 1];
     for (var iv = data.version.length - 1; iv >= 0; iv--) {
         var ver = data.version[iv];
         version += template_version.replace('{version}', ver);
     }
-    if (data.version.length < 2) version += template_version_disabled;
+    if (data.version.length < 2) {
+        disabled = 'mdui-hidden';
+        disabled_replace = latest;
+    }
     var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
     var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replaceAll('{id}', i));
-    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replaceAll('{id}', i));
+    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{id}', i));
+    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{id}', i));
 }
 $$('.mdui-select').on('closed.mdui.select', function(target) {
     var id = target.target.dataset.id;
@@ -177,10 +187,12 @@ clipboard.on('error', function(e) {
     copyManually(e.trigger.dataset.clipboardText);
 });
 
+var lastscroll = 0;
 window.addEventListener('scroll', function(e) {
-  if (window.scrollY < 50) {
-    $$('#back-to-top').addClass('mdui-fab-hide');
-  } else {
+  if (window.scrollY > 50 && lastscroll - window.scrollY > 0) {
     $$('#back-to-top').removeClass('mdui-fab-hide');
+  } else {
+    $$('#back-to-top').addClass('mdui-fab-hide');
   }
+  lastscroll = window.scrollY;
 });
