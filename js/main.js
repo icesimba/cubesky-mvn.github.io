@@ -28,7 +28,7 @@ const dataStore = [{
 }];
 const template = `
     <tr>
-      <td>{project}</td>
+      <td mdui-tooltip="{ content : '{description}' }">{project}</td>
       <td>{group}</td>
       <td>{name}</td>
       <td>
@@ -39,7 +39,6 @@ const template = `
         </span>
         {latest}
       </td>
-      <td>{description}</td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a></td>
       <td class="mdui-p-l-1">

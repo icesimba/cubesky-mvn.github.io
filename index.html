@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-color-grey-200">
-    <div class="mdui-appbar mdui-appbar-scroll-toolbar-hide">
+    <div class="mdui-appbar mdui-appbar-fixed mdui-appbar-scroll-toolbar-hide">
       <div class="mdui-toolbar mdui-color-theme">
         <span class="mdui-typo-title">CubeSky Repo</span>
       </div>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div id="tab-home">
-      <div class="mdui-container mdui-m-b-2">
+      <div class="mdui-container mdui-m-b-2 mdui-appbar-with-toolbar mdui-appbar-with-tab">
         <h1>CubeSky Repository</h1>
         <div>
           This is CubeSky's Personal Repository Home Page. Import my Java and Kotlin Library into your project easily.
@@ -53,7 +53,7 @@
       </div>
     </div>
     <div id="tab-config">
-      <div class="mdui-container mdui-m-b-2">
+      <div class="mdui-container mdui-m-b-2 mdui-appbar-with-toolbar mdui-appbar-with-tab">
         <div class="mdui-row mdui-m-b-2">
           <h1>How to use</h1>
           <div class="mdui-m-b-2">Add these <span class="mdui-text-color-deep-orange">orange</span> color code to your build file (pom.xml for Maven, build.gradle for Gradle) and refresh your project.</div>
@@ -105,7 +105,7 @@ dependencies {<span class="mdui-text-color-deep-orange">
       </div>
     </div>
     <div id="tab-library">
-      <div class="mdui-container mdui-m-b-2">
+      <div class="mdui-container mdui-m-b-2 mdui-appbar-with-toolbar mdui-appbar-with-tab">
         <div class="mdui-row">
           <h1>Library</h1>
           <div class="mdui-hidden-md-up" id="library-list-sm">
@@ -118,7 +118,6 @@ dependencies {<span class="mdui-text-color-deep-orange">
                   <th>Group</th>
                   <th>Name</th>
                   <th>Version</th>
-                  <th>Description</th>
                   <th>Home Page</th>
                   <th>License</th>
                   <th>Action</th>
