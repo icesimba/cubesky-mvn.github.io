@@ -15,7 +15,7 @@ const dataStore = [{
     description: 'A gobang game board management library written in Kotlin',
     source: 'Github',
     license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
-    version: ['1.0']
+    version: ['1.0', '2.0']
 }];
 const template = `
     <tr>
