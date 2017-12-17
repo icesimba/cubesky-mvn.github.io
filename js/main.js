@@ -7,7 +7,7 @@ const dataStore = [{
     source: 'Github',
     license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
     version: ['1.0', '2.0', '2.1']
-},{
+}, {
     project: 'Gobang Board',
     group: 'party.liyin',
     name: 'gobangboard',
@@ -16,6 +16,15 @@ const dataStore = [{
     source: 'Github',
     license: { name: 'AGPLv3', url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0' },
     version: ['1.0', '2.0']
+}, {
+    project: 'Protocol Data Router',
+    group: 'party.liyin',
+    name: 'protocolrouter',
+    url: 'https://github.com/cubesky/ProtocolRouter',
+    description: 'A Library written in kotlin to transform low-level data byte array to Protocol with mark and route them to another system',
+    source: 'Github',
+    license: { name: 'Apache 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0' },
+    version: []
 }];
 const template = `
     <tr>
@@ -34,7 +43,7 @@ const template = `
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a></td>
       <td class="mdui-p-l-1">
-        <button class="mdui-btn mdui-btn-dense mdui-ripple mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-list-id-{id}', position: 'top', align: 'right'}">Copy</button>
+        <button class="mdui-btn mdui-btn-dense mdui-ripple mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-list-id-{id}', position: 'top', align: 'right'}" {pre-release}>Copy</button>
         <ul class="mdui-menu" id="menu-list-id-{id}">
           <li class="mdui-menu-item">
             <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
@@ -70,7 +79,7 @@ const template_sm = `
       <div class="mdui-row">
         <a class="mdui-btn mdui-ripple mdui-m-l-1" target="_blank" href="{url}" mdui-tooltip="{ content:'Go To Project' }">{source}</a>
         <a class="mdui-btn mdui-ripple" target="_blank" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a>
-        <button class="mdui-btn mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-id-{id}', position: 'top', align: 'right'}">Copy</button>
+        <button class="mdui-btn mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-id-{id}', position: 'top', align: 'right'}" {pre-release}>Copy</button>
         <ul class="mdui-menu" id="menu-id-{id}">
           <li class="mdui-menu-item">
             <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
@@ -116,19 +125,27 @@ for (var i = 0; i < dataStore.length; i++) {
     var version = '';
     var disabled = '';
     var disabled_replace = '';
-    var latest = data.version[data.version.length - 1];
-    for (var iv = data.version.length - 1; iv >= 0; iv--) {
-        var ver = data.version[iv];
-        version += template_version.replace('{version}', ver);
-    }
-    if (data.version.length < 2) {
-        disabled = 'mdui-hidden';
-        disabled_replace = latest;
+    var latest = '';
+    var per_release = '';
+    if(data.version.length > 0){
+        lastest = data.version[data.version.length - 1];
+        for (var iv = data.version.length - 1; iv >= 0; iv--) {
+            var ver = data.version[iv];
+            version += template_version.replace('{version}', ver);
+        }
+        if (data.version.length < 2) {
+            disabled = 'mdui-hidden';
+            disabled_replace = latest;
+        }
+    } else {
+    	disabled = 'mdui-hidden';
+        per_release = 'disabled';
+        disabled_replace = 'WIP';
     }
     var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
     var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{id}', i));
-    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{id}', i));
+    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
+    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
 }
 $$('.mdui-select').on('closed.mdui.select', function(target) {
     var id = target.target.dataset.id;
