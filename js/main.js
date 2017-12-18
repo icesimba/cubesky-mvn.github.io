@@ -28,7 +28,7 @@ const dataStore = [{
 }];
 const template = `
     <tr>
-      <td mdui-tooltip="{ content : '{description}' }">{project}</td>
+      <td>{project}<button class="mdui-btn mdui-btn-icon mdui-ripple fa fa-question-circle" mdui-tooltip="{ content : '{description}' }"></button></td>
       <td>{group}</td>
       <td>{name}</td>
       <td>
