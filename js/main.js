@@ -6,7 +6,7 @@ const dataStore = [{
     description: 'Easy TCP/UDP transport',
     source: 'Github',
     license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
-    version: ['1.0', '2.0', '2.1']
+    version: ['1.0', '2.0', '2.1', '3.0']
 }, {
     project: 'Gobang Board',
     group: 'party.liyin',
