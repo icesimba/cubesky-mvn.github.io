@@ -5,6 +5,7 @@ const dataStore = [{
     url: 'https://github.com/cubesky/SocketChannel',
     description: 'Easy TCP/UDP transport',
     source: 'Github',
+    type: 'jar',
     license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
     version: ['1.0', '2.0', '2.1', '3.0']
 }, {
@@ -14,6 +15,7 @@ const dataStore = [{
     url: 'https://github.com/cubesky/GobangBoard',
     description: 'A gobang game board management library written in Kotlin',
     source: 'Github',
+    type: 'jar',
     license: { name: 'AGPLv3', url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0' },
     version: ['1.0', '2.0']
 }, {
@@ -23,6 +25,7 @@ const dataStore = [{
     url: 'https://github.com/cubesky/ProtocolRouter',
     description: 'A Library written in kotlin to transform low-level data byte array to Protocol with mark and route them to another system',
     source: 'Github',
+    type: 'jar',
     license: { name: 'Apache 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0' },
     version: []
 }];
@@ -33,12 +36,13 @@ const template = `
       <td>{name}</td>
       <td>
         <span class="{disabled}">
-          <select class="mdui-select {disabled}" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
+          <select class="mdui-select {disabled}" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}" data-type="{dtype}">
             {versions}
           </select>
         </span>
         {latest}
       </td>
+      <td>{type}</td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
       <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a></td>
       <td class="mdui-p-l-1">
@@ -66,12 +70,13 @@ const template_sm = `
       <div>
         <strong>Version: </strong>
         <span class="{disabled}">
-          <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}">
+          <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}" data-type="{dtype}">
             {versions}
           </select>
         </span>
         {latest}
       </div>
+      <div><strong>Type: </strong>{type}</div>
       <div><strong>Description: </strong>{description}</div>
     </div>
     <div class="mdui-card-actions">
@@ -96,9 +101,9 @@ const template_version = `<option>{version}</option>`;
 const template_maven = `<dependency>
   <groupId>{group}</groupId>
   <artifactId>{name}</artifactId>
-  <version>{version}</version>
+  <version>{version}</version>{other}
 </dependency>`;
-const template_gradle = `compile group: '{group}', name: '{name}', version: '{version}'`;
+const template_gradle = `compile '{group}:{name}:{version}{other}'`;
 const maven_repo = `<repository>
   <id>cubesky-mvn</id>
   <name>CubeSkyMVN</name>
@@ -127,7 +132,7 @@ for (var i = 0; i < dataStore.length; i++) {
     var latest = '';
     var per_release = '';
     if(data.version.length > 0){
-        lastest = data.version[data.version.length - 1];
+        latest = data.version[data.version.length - 1];
         for (var iv = data.version.length - 1; iv >= 0; iv--) {
             var ver = data.version[iv];
             version += template_version.replace('{version}', ver);
@@ -141,22 +146,40 @@ for (var i = 0; i < dataStore.length; i++) {
         per_release = 'disabled';
         disabled_replace = 'WIP';
     }
-    var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-    var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest);
-    $$('#library-list')[0].innerHTML += (template.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
-    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
+    var type = data.type;
+    var maven_other = ``
+    var gradle_other = ``
+    if (type === '' || type === 'jar') {
+      type = 'jar';
+    } else {
+      maven_other = `
+  <type>{type}</type>`.replace('{type}', type);
+      gradle_other = '@' + type
+    }
+    var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest).replace('{other}',gradle_other);
+    var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest).replace('{other}',maven_other);
+    $$('#library-list')[0].innerHTML += (template.replace('{type}',type).replace('{dtype}',type).replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
+    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{type}',type).replace('{dtype}',type).replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
 }
 $$('.mdui-select').on('closed.mdui.select', function(target) {
     var id = target.target.dataset.id;
     var name = target.target.dataset.name;
     var group = target.target.dataset.group;
+    var type = target.target.dataset.type;
     var version = target.target.value;
     $$('[name=select-ver-sm-' + id + ']').val(version);
     $$('[name=select-ver-' + id + ']').val(version);
     new mdui.Select('[name=select-ver-' + id + ']', {}).handleUpdate();
     new mdui.Select('[name=select-ver-sm-' + id + ']', {}).handleUpdate();
-    var gradle = template_gradle.replace('{group}', group).replace('{name}', name).replace('{version}', version);
-    var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version);
+    var gradle_other = ''
+    var maven_other = ``
+    if (type !== 'jar') {
+      gradle_other = '@' + type
+      maven_other = `
+  <type>{type}</type>`.replace('{type}',type)
+    }
+    var gradle = template_gradle.replace('{group}', group).replace('{name}', name).replace('{version}', version).replace('{other}',gradle_other);
+    var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version).replace('{other}',maven_other);
     $$('[name=lib-gradle-' + id + ']')[0].setAttribute('data-clipboard-text', gradle);
     $$('[name=lib-gradle-' + id + ']')[1].setAttribute('data-clipboard-text', gradle);
     $$('[name=lib-maven-' + id + ']')[0].setAttribute('data-clipboard-text', maven);
