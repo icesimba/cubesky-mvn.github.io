@@ -68,7 +68,10 @@ repositories {<span class="mdui-text-color-deep-orange">
   }</span>
 }
 dependencies {<span class="mdui-text-color-deep-orange">
-  compile group: '${Group}', name: '${Name}', version: '${Version}'</span>
+  compile '${Group}:${Name}:${Version}'
+  compile '${Group}:${Name}:${Version}@${Type}'
+  implementation '${Group}:${Name}:${Version}'
+  implementation '${Group}:${Name}:${Version}@${Type}'</span>
 }
 </code></pre>
                 <button class="btncopy mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" id="gradle-install" data-clipboard-action="copy" data-clipboard-text mdui-tooltip="{ content:'Copy Gradle Config', delay: 600 }"><i class="mdui-icon mdui-icon-left material-icons">content_copy</i> Copy</button>
@@ -94,6 +97,12 @@ dependencies {<span class="mdui-text-color-deep-orange">
     &lt;groupId&gt;${Group}&lt;/groupId&gt;
     &lt;artifactId&gt;${Name}&lt;/artifactId&gt;
     &lt;version&gt;${Version}&lt;/version&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;${Group}&lt;/groupId&gt;
+    &lt;artifactId&gt;${Name}&lt;/artifactId&gt;
+    &lt;version&gt;${Version}&lt;/version&gt;
+    &lt;type&gt;${Type}&lt;/type&gt;
   &lt;/dependency&gt;</span>
 &lt;/dependencies&gt;
 </code></pre>
