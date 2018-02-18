@@ -103,7 +103,7 @@ const template_maven = `<dependency>
   <artifactId>{name}</artifactId>
   <version>{version}</version>{other}
 </dependency>`;
-const template_gradle = `compile '{group}:{name}:{version}{other}'`;
+const template_gradle = `implementation '{group}:{name}:{version}{other}'`;
 const maven_repo = `<repository>
   <id>cubesky-mvn</id>
   <name>CubeSkyMVN</name>
