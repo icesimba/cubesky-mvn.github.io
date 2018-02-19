@@ -28,6 +28,16 @@ const dataStore = [{
     type: 'jar',
     license: { name: 'Apache 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0' },
     version: []
+}, {
+    project: 'EasyWifiP2P',
+    group: 'party.liyin',
+    name: 'easywifip2p',
+    url: '#https://github.com/cubesky/EasyWifiP2P',
+    description: 'A Library written in Kotlin and Java to make your WifiDirect Easiler',
+    source: 'Github',
+    type: 'aar',
+    license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
+    version: []
 }];
 const template = `
     <tr>
