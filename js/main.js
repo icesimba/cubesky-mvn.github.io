@@ -38,6 +38,16 @@ const dataStore = [{
     type: 'aar',
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
     version: []
+}, {
+    project: 'MulticastHelper',
+    group: 'party.liyin',
+    name: 'multicasthelper',
+    url: 'https://github.com/cubesky/MulticastHelper',
+    description: 'A Java library to make your multicast easiler',
+    source: 'Github',
+    type: 'jar',
+    license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
+    version: []
 }];
 const template = `
     <tr>
