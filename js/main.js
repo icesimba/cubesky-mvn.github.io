@@ -32,12 +32,12 @@ const dataStore = [{
     project: 'EasyWifiP2P',
     group: 'party.liyin',
     name: 'easywifip2p',
-    url: '#https://github.com/cubesky/EasyWifiP2P',
-    description: 'A Library written in Kotlin and Java to make your WifiDirect Easiler',
+    url: 'https://github.com/cubesky/EasyWifiP2P',
+    description: 'A Library written in Kotlin and Java to make your Android WifiDirect Easiler',
     source: 'Github',
     type: 'aar',
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
-    version: []
+    version: ['1.0']
 }, {
     project: 'MulticastHelper',
     group: 'party.liyin',
