@@ -47,7 +47,7 @@ const dataStore = [{
     source: 'Github',
     type: 'jar',
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
-    version: []
+    version: ['1.0']
 }];
 const template = `
     <tr>
