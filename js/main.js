@@ -49,81 +49,127 @@ const dataStore = [{
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
     version: ['1.0']
 }];
-const template = `
-    <tr>
-      <td>{project}<button class="mdui-btn mdui-btn-icon mdui-ripple fa fa-question-circle" mdui-tooltip="{ content : '{description}' }"></button></td>
-      <td>{group}</td>
-      <td>{name}</td>
-      <td>
-        <span class="{disabled}">
-          <select class="mdui-select {disabled}" mdui-select name="select-ver-{id}" data-id="{id}" data-name="{name}" data-group="{group}" data-type="{dtype}">
-            {versions}
-          </select>
-        </span>
-        {latest}
-      </td>
-      <td>{type}</td>
-      <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{url}" mdui-tooltip="{ content:'Go to Home Page' }">{source}</a></td>
-      <td><a class="mdui-btn mdui-btn-dense mdui-ripple" target="_black" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a></td>
-      <td class="mdui-p-l-1">
-        <button class="mdui-btn mdui-btn-dense mdui-ripple mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-list-id-{id}', position: 'top', align: 'right'}" {pre-release}>Copy</button>
-        <ul class="mdui-menu" id="menu-list-id-{id}">
-          <li class="mdui-menu-item">
-            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
-          </li>
-          <li class="mdui-menu-item">
-            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{id}">Gradle</button>
-          </li>
-        </ul>
-      </td>
-    </tr>
-    `;
-const template_sm = `
-<div class="mdui-row mdui-m-b-2">
-  <div class="mdui-card">
-    <div class="mdui-card-primary">
-      <div class="mdui-card-primary-title">{project}</div>
-    </div>
-    <div class="mdui-card-content">
-      <div><strong>Group: </strong>{group}</div>
-      <div><strong>Name: </strong>{name}</div>
-      <div>
-        <strong>Version: </strong>
-        <span class="{disabled}">
-          <select class="mdui-select" mdui-select name="select-ver-sm-{id}" data-id="{id}" data-name="{name}" data-group="{group}" data-type="{dtype}">
-            {versions}
-          </select>
-        </span>
-        {latest}
-      </div>
-      <div><strong>Type: </strong>{type}</div>
-      <div><strong>Description: </strong>{description}</div>
-    </div>
-    <div class="mdui-card-actions">
-      <div class="mdui-row">
-        <a class="mdui-btn mdui-ripple mdui-m-l-1" target="_blank" href="{url}" mdui-tooltip="{ content:'Go To Project' }">{source}</a>
-        <a class="mdui-btn mdui-ripple" target="_blank" href="{license-url}" mdui-tooltip="{ content:'{license-fullname}' }">{license-name}</a>
-        <button class="mdui-btn mdui-float-right mdui-text-uppercase" mdui-menu="{target: '#menu-id-{id}', position: 'top', align: 'right'}" {pre-release}>Copy</button>
-        <ul class="mdui-menu" id="menu-id-{id}">
-          <li class="mdui-menu-item">
-            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{maven}" name="lib-maven-{id}">Maven</button>
-          </li>
-          <li class="mdui-menu-item">
-            <button class="btncopy mdui-btn mdui-btn-block mdui-ripple" data-clipboard-action="copy" data-clipboard-text="{gradle}" name="lib-gradle-{id}">Gradle</button>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
+const ef_table_template = ef.t`
+>tbody
+  +librarylist
+`
+const ef_table_template_sm = ef.t`
+>div
+  +librarylist
+`
+const ef_template = ef.t`
+>tr
+  >td
+    .{{project}}
+    >button.mdui-btn.mdui-btn-icon.mdui-ripple.fa.fa-question-circle
+      #mdui-tooltip = { content : '{{description}}' }
+  >td
+    .{{group}}
+  >td
+    .{{name}}
+  >td
+    >span.{{disabled}}
+      >select.mdui-select
+        %value = {{version_select}}
+        #mdui-select
+        +versions
+    .{{latest}}
+  >td
+    .{{type}}
+  >td
+    >a.mdui-btn.mdui-btn-dense.mdui-ripple
+      #target = _blank
+      #href = {{url}}
+      #mdui-tooltip = { content:'Go to Home Page' }
+      .{{source}}
+  >td
+    >a.mdui-btn.mdui-btn-dense.mdui-ripple
+      #target = _blank
+      #href = {{license_url}}
+      #mdui-tooltip = { content:'{{license_fullname}}' }
+      .{{license_name}}
+  >td.mdui-p-l-1
+    >button.mdui-btn.mdui-btn-dense.mdui-ripple.mdui-float-right.mdui-text-uppercase#btncpy
+      #mdui-menu = {target: '#menu-list-id-{{id}}', position: 'top', align: 'right'}
+      .Copy
+    >ul.mdui-menu
+      #id = menu-list-id-{{id}}
+      >li.mdui-menu-item
+        >button.btncopy.mdui-btn.mdui-btn-block.mdui-ripple
+          #data-clipboard-action = copy
+          #data-clipboard-text = <dependency>&n  <groupId>{{group}}</groupId>&n  <artifactId>{{name}}</artifactId>&n  <version>{{version_select}}</version>{{maven_other}}&n</dependency>
+          .Maven
+      >li.mdui-menu-item
+        >button.btncopy.mdui-btn.mdui-btn-block.mdui-ripple
+          #data-clipboard-action = copy
+          #data-clipboard-text = implementation '{{group}}:{{name}}:{{version_select}}{{gradle_other}}'
+          .Gradle
+`
+const ef_template_sm = ef.t`
+>div.mdui-row.mdui-m-b-2
+  >div.mdui-card
+    >div.mdui-card-primary
+      >div.mdui-card-primary-title
+        .{{project}}
+    >div.mdui-card-content
+      >div
+        >strong
+          .Group: 
+        .{{group}}
+      >div
+        >strong
+          .Name: 
+        .{{name}}
+      >div
+        >strong
+          .Version: 
+        >span.{{disabled}}
+          >select.mdui-select
+            %value = {{version_select}}
+            #mdui-select
+            +versions
+        .{{latest}}
+      >div
+        >strong
+          .Type: 
+        .{{type}}
+      >div
+        >strong
+          .Description: 
+        .{{description}}
+    >div.mdui-card-actions
+      >div.mdui-row
+        >a.mdui-btn.mdui-ripple.mdui-m-l-1
+          #target = _blank
+          #href = {{url}}
+          #mdui-tooltip = { content:'Go To Project' }
+          .{{source}}
+        >a.mdui-btn.mdui-ripple
+          #target = _blank
+          #href = {{license_url}}
+          #mdui-tooltip = { content:'{{license_fullname}}' }
+          .{{license_name}}
+        >button.mdui-btn.mdui-float-right.mdui-text-uppercase#btncpy
+          #mdui-menu = {target: '#menu-id-{{id}}', position: 'top', align: 'right'}
+          .Copy
+        >ul.mdui-menu
+          #id = menu-id-{{id}}
+          >li.mdui-menu-item
+            >button.btncopy.mdui-btn.mdui-btn-block.mdui-ripple
+              #data-clipboard-action = copy
+              #data-clipboard-text = <dependency>&n  <groupId>{{group}}</groupId>&n  <artifactId>{{name}}</artifactId>&n  <version>{{version_select}}</version>{{maven_other}}&n</dependency>
+              .Maven
+          >li.mdui-menu-item
+            >button.btncopy.mdui-btn.mdui-btn-block.mdui-ripple
+              #data-clipboard-action = copy
+              #data-clipboard-text = implementation '{{group}}:{{name}}:{{version_select}}{{gradle_other}}'
+              .Gradle
+`
+const ef_template_version = ef.t`
+>option
+  #value = {{version}}
+  .{{version}}
 `;
-const template_version = `<option>{version}</option>`;
-const template_maven = `<dependency>
-  <groupId>{group}</groupId>
-  <artifactId>{name}</artifactId>
-  <version>{version}</version>{other}
-</dependency>`;
-const template_gradle = `implementation '{group}:{name}:{version}{other}'`;
 const maven_repo = `<repository>
   <id>cubesky-mvn</id>
   <name>CubeSkyMVN</name>
@@ -138,73 +184,91 @@ document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', func
   $$('#manual-copy')[0].style.height = '80%';
   copyDialog.handleUpdate();
 });
-String.prototype.replaceAll = function(search, replacement) {
-    var target = this;
-    return target.split(search).join(replacement);
-};
 $$('#maven-install')[0].setAttribute('data-clipboard-text', maven_repo);
 $$('#gradle-install')[0].setAttribute('data-clipboard-text', gradle_repo);
+
+const large_library = new ef_table_template()
+const small_library = new ef_table_template_sm()
+
+large_library.$mount({target: $$('#library-list')[0]})
+small_library.$mount({target: $$('#library-list-sm')[0]})
+
 for (var i = 0; i < dataStore.length; i++) {
-    var data = dataStore[i];
-    var version = '';
-    var disabled = '';
-    var disabled_replace = '';
-    var latest = '';
-    var per_release = '';
-    if(data.version.length > 0){
-        latest = data.version[data.version.length - 1];
-        for (var iv = data.version.length - 1; iv >= 0; iv--) {
-            var ver = data.version[iv];
-            version += template_version.replace('{version}', ver);
-        }
-        if (data.version.length < 2) {
-            disabled = 'mdui-hidden';
-            disabled_replace = latest;
-        }
-    } else {
-    	disabled = 'mdui-hidden';
-        per_release = 'disabled';
-        disabled_replace = 'WIP';
+  var data = dataStore[i]
+  var disabled
+  var latest
+  var gradle_other = '@' + data.type
+  var maven_other = '\n  <type>' + data.type + '</type>'
+  if (data.version.length === 0) {
+    disabled = 'mdui-hidden'
+    latest = 'WIP'
+  } else if(data.version.length === 1) {
+    disabled = 'mdui-hidden'
+    latest = data.version[0]
+  } else {
+    disabled = ''
+    latest = ''
+  }
+  if (data.type === '' || data.type === 'jar') {
+    gradle_other = ''
+    maven_other = ''
+  }
+  large_library.librarylist.push(new ef_template({
+    $data: {
+      project: data.project,
+      group: data.group,
+      name: data.name,
+      type: data.type,
+      description: data.description,
+      source: data.source,
+      url: data.url,
+      license_url: data.license.url,
+      license_fullname: data.license.fullname,
+      license_name: data.license.name,
+      id: i,
+      disabled: disabled,
+      latest: latest,
+      maven_other: maven_other,
+      gradle_other: gradle_other
     }
-    var type = data.type;
-    var maven_other = ``
-    var gradle_other = ``
-    if (type === '' || type === 'jar') {
-      type = 'jar';
-    } else {
-      maven_other = `
-  <type>{type}</type>`.replace('{type}', type);
-      gradle_other = '@' + type
+  }))
+  small_library.librarylist.push(new ef_template_sm({
+    $data: {
+      project: data.project,
+      group: data.group,
+      name: data.name,
+      type: data.type,
+      description: data.description,
+      source: data.source,
+      url: data.url,
+      license_url: data.license.url,
+      license_fullname: data.license.fullname,
+      license_name: data.license.name,
+      id: i,
+      disabled: disabled,
+      latest: latest,
+      maven_other: maven_other,
+      gradle_other: gradle_other
     }
-    var gradle = template_gradle.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest).replace('{other}',gradle_other);
-    var maven = template_maven.replace('{group}', data.group).replace('{name}', data.name).replace('{version}', latest).replace('{other}',maven_other);
-    $$('#library-list')[0].innerHTML += (template.replace('{type}',type).replace('{dtype}',type).replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
-    $$('#library-list-sm')[0].innerHTML += (template_sm.replace('{type}',type).replace('{dtype}',type).replace('{project}', data.project).replace('{versions}', version).replaceAll('{url}', data.url).replaceAll('{group}', data.group).replaceAll('{name}', data.name).replace('{description}', data.description).replace('{license-name}', data.license.name).replace('{license-url}', data.license.url).replace('{license-fullname}', data.license.fullname).replace('{source}', data.source).replace('{gradle}', gradle).replace('{maven}', maven).replace('{disabled}', disabled).replace('{latest}', disabled_replace).replaceAll('{pre-release}', per_release).replaceAll('{id}', i));
+  }))
+  for (var v = (data.version.length - 1); v >= 0; v--) {
+    large_library.librarylist[i].versions.push(new ef_template_version({$data:{ version: data.version[v] }}))
+    small_library.librarylist[i].versions.push(new ef_template_version({$data:{ version: data.version[v] }}))
+  }
+  if (data.version.length === 0) {  } else if(data.version.length === 1) {
+    large_library.librarylist[i].$data.version_select = data.version[0]
+    small_library.librarylist[i].$data.version_select = data.version[0]
+  } else {
+    large_library.librarylist[i].$data.version_select = data.version[data.version.length - 1]
+    small_library.librarylist[i].$data.version_select = data.version[data.version.length - 1]
+  }
+  if (data.version.length === 0) {
+    $$(large_library.librarylist[i].$refs.btncpy).attr('disabled','disabled')
+    $$(small_library.librarylist[i].$refs.btncpy).attr('disabled','disabled')
+  }
 }
-$$('.mdui-select').on('closed.mdui.select', function(target) {
-    var id = target.target.dataset.id;
-    var name = target.target.dataset.name;
-    var group = target.target.dataset.group;
-    var type = target.target.dataset.type;
-    var version = target.target.value;
-    $$('[name=select-ver-sm-' + id + ']').val(version);
-    $$('[name=select-ver-' + id + ']').val(version);
-    new mdui.Select('[name=select-ver-' + id + ']', {}).handleUpdate();
-    new mdui.Select('[name=select-ver-sm-' + id + ']', {}).handleUpdate();
-    var gradle_other = ''
-    var maven_other = ``
-    if (type !== 'jar') {
-      gradle_other = '@' + type
-      maven_other = `
-  <type>{type}</type>`.replace('{type}',type)
-    }
-    var gradle = template_gradle.replace('{group}', group).replace('{name}', name).replace('{version}', version).replace('{other}',gradle_other);
-    var maven = template_maven.replace('{group}', group).replace('{name}', name).replace('{version}', version).replace('{other}',maven_other);
-    $$('[name=lib-gradle-' + id + ']')[0].setAttribute('data-clipboard-text', gradle);
-    $$('[name=lib-gradle-' + id + ']')[1].setAttribute('data-clipboard-text', gradle);
-    $$('[name=lib-maven-' + id + ']')[0].setAttribute('data-clipboard-text', maven);
-    $$('[name=lib-maven-' + id + ']')[1].setAttribute('data-clipboard-text', maven);
-});
+
+mdui.mutation()
 
 function copyManually(data) {
     copyDialog.open();
