@@ -29,7 +29,7 @@ const dataStore = [{
     license: { name: 'Apache 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0' },
     version: []
 }, {
-    project: 'EasyWifiP2P',
+    project: 'Easy Wifi P2P',
     group: 'party.liyin',
     name: 'easywifip2p',
     url: 'https://github.com/cubesky/EasyWifiP2P',
@@ -39,7 +39,7 @@ const dataStore = [{
     license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
     version: ['1.0']
 }, {
-    project: 'MulticastHelper',
+    project: 'Multicast Helper',
     group: 'party.liyin',
     name: 'multicasthelper',
     url: 'https://github.com/cubesky/MulticastHelper',
