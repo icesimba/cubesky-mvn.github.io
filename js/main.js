@@ -71,6 +71,7 @@ const ef_template = ef.t`
     >span.{{disabled}}
       >select.mdui-select
         %value = {{version_select}}
+        #id = vlist-lg-{{id}}
         #mdui-select
         +versions
     .{{latest}}
@@ -126,6 +127,7 @@ const ef_template_sm = ef.t`
         >span.{{disabled}}
           >select.mdui-select
             %value = {{version_select}}
+            #id = vlist-sm-{{id}}
             #mdui-select
             +versions
         .{{latest}}
