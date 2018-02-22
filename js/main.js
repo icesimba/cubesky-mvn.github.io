@@ -6,7 +6,7 @@ const dataStore = [{
     description: 'Easy TCP/UDP transport',
     source: 'Github',
     type: 'jar',
-    license: { name: 'GPLv3', url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0' },
+    license: 'GPLv3',
     version: ['1.0', '2.0', '2.1', '3.0']
 }, {
     project: 'Gobang Board',
@@ -16,7 +16,7 @@ const dataStore = [{
     description: 'A gobang game board management library written in Kotlin',
     source: 'Github',
     type: 'jar',
-    license: { name: 'AGPLv3', url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0' },
+    license: 'AGPLv3',
     version: ['1.0', '2.0']
 }, {
     project: 'Protocol Data Router',
@@ -26,7 +26,7 @@ const dataStore = [{
     description: 'A Library written in kotlin to transform low-level data byte array to Protocol with mark and route them to another system',
     source: 'Github',
     type: 'jar',
-    license: { name: 'Apache 2.0', url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0' },
+    license: 'Apache 2.0',
     version: []
 }, {
     project: 'Easy Wifi P2P',
@@ -36,7 +36,7 @@ const dataStore = [{
     description: 'A Library written in Kotlin and Java to make your Android WifiDirect Easiler',
     source: 'Github',
     type: 'aar',
-    license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
+    license: 'MIT',
     version: ['1.0']
 }, {
     project: 'Multicast Helper',
@@ -46,9 +46,23 @@ const dataStore = [{
     description: 'A Java library to make your multicast easiler',
     source: 'Github',
     type: 'jar',
-    license: { name: 'MIT', url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License' },
+    license: 'MIT',
     version: ['1.0']
-}];
+}]
+var licenseData = {
+  'GPLv3': {
+    url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0'
+  },
+  'AGPLv3': {
+    url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0'
+  },
+  'Apache 2.0': {
+    url: 'https://www.apache.org/licenses/LICENSE-2.0', fullname: 'Apache License Version 2.0'
+  },
+  'MIT': {
+    url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License'
+  }
+}
 const ef_table_template = ef.t`
 >tbody
   +librarylist
@@ -175,20 +189,20 @@ const ef_template_version = ef.t`
 >option
   #value = {{version}}
   .{{version}}
-`;
+`
 const maven_repo = `<repository>
   <id>cubesky-mvn</id>
   <name>CubeSkyMVN</name>
   <url>https://cubesky-mvn.github.io</url>
-</repository>`;
+</repository>`
 const gradle_repo = `maven {
   url 'https://cubesky-mvn.github.io'
-}`;
-var $$ = mdui.JQ;
+}`
+var $$ = mdui.JQ
 var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
 document.getElementById('copy-dialog').addEventListener('open.mdui.dialog', function () {
-  $$('#manual-copy')[0].style.height = '80%';
-  copyDialog.handleUpdate();
+  $$('#manual-copy')[0].style.height = '80%'
+  copyDialog.handleUpdate()
 });
 $$('#maven-install')[0].setAttribute('data-clipboard-text', maven_repo);
 $$('#gradle-install')[0].setAttribute('data-clipboard-text', gradle_repo);
@@ -227,6 +241,10 @@ for (var i = 0; i < dataStore.length; i++) {
     gradle_other = ''
     maven_other = ''
   }
+  var license = licenseData[data.license]
+  if (license === undefined) {
+    license = { url: '', fullname: 'License Data Not Found' }
+  }
   var listdata = {
       project: data.project,
       group: data.group,
@@ -235,9 +253,9 @@ for (var i = 0; i < dataStore.length; i++) {
       description: data.description,
       source: data.source,
       url: data.url,
-      license_url: data.license.url,
-      license_fullname: data.license.fullname,
-      license_name: data.license.name,
+      license_url: license.url,
+      license_fullname: license.fullname,
+      license_name: data.license,
       id: i,
       disabled: disabled,
       latest: latest,
@@ -282,17 +300,17 @@ for (var i = 0; i < dataStore.length; i++) {
 mdui.mutation()
 
 function copyManually(data) {
-    copyDialog.open();
-    $$('#manual-copy').val(data);
+    copyDialog.open()
+    $$('#manual-copy').val(data)
     $$('#dialog-content')[0].scroll({
       top: 0, 
       left: 0, 
       behavior: 'smooth' 
-    });
+    })
 }
 
 function copyManuallyClose() {
-    copyDialog.close();
+    copyDialog.close()
 }
 
 function toTop() {
@@ -300,7 +318,7 @@ function toTop() {
     top: 0, 
     left: 0, 
     behavior: 'smooth' 
-  });
+  })
 }
 
 var clipboard = new Clipboard('.btncopy');
@@ -309,24 +327,24 @@ clipboard.on('success', function(e) {
         message: 'Copied',
         position: 'right-top',
         timeout: 2500
-    });
-    e.clearSelection();
-});
+    })
+    e.clearSelection()
+})
 clipboard.on('error', function(e) {
     mdui.snackbar({
         message: 'Can not copy on your browser',
         position: 'right-top',
         timeout: 2500
-    });
-    copyManually(e.trigger.dataset.clipboardText);
-});
+    })
+    copyManually(e.trigger.dataset.clipboardText)
+})
 
-var lastscroll = 0;
+var lastscroll = 0
 window.addEventListener('scroll', function(e) {
   if (window.scrollY > 50 && lastscroll - window.scrollY > 0) {
-    $$('#back-to-top').removeClass('mdui-fab-hide');
+    $$('#back-to-top').removeClass('mdui-fab-hide')
   } else {
-    $$('#back-to-top').addClass('mdui-fab-hide');
+    $$('#back-to-top').addClass('mdui-fab-hide')
   }
-  lastscroll = window.scrollY;
-});
+  lastscroll = window.scrollY
+})
