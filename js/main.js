@@ -59,6 +59,7 @@ const ef_table_template_sm = ef.t`
 `
 const ef_template = ef.t`
 >tr
+  #data-type = {{scr = large}}
   >td
     .{{project}}
     >button.mdui-btn.mdui-btn-icon.mdui-ripple.fa.fa-question-circle
@@ -109,6 +110,7 @@ const ef_template = ef.t`
 `
 const ef_template_sm = ef.t`
 >div.mdui-row.mdui-m-b-2
+  #data-type = {{scr = small}}
   >div.mdui-card
     >div.mdui-card-primary
       >div.mdui-card-primary-title
@@ -194,6 +196,14 @@ $$('#gradle-install')[0].setAttribute('data-clipboard-text', gradle_repo);
 const large_library = new ef_table_template()
 const small_library = new ef_table_template_sm()
 
+function switchState(state){
+  if(state.$data.scr === 'large') {
+    return small_library.librarylist[state.$data.id]
+  } else {
+    return large_library.librarylist[state.$data.id]
+  }
+}
+
 large_library.$mount({target: $$('#library-list')[0]})
 small_library.$mount({target: $$('#library-list-sm')[0]})
 
@@ -237,8 +247,8 @@ for (var i = 0; i < dataStore.length; i++) {
     },
     $methods: {
       vSync ({state}) {
-        small_library.librarylist[state.$data.id].$data.version_select = state.$data.version_select
-        new mdui.Select(small_library.librarylist[state.$data.id].$refs.vlist,{}).handleUpdate()
+        switchState(state).$data.version_select = state.$data.version_select
+        new mdui.Select(switchState(state).$refs.vlist,{}).handleUpdate()
       }
     }
   }))
@@ -262,8 +272,8 @@ for (var i = 0; i < dataStore.length; i++) {
     },
     $methods: {
       vSync ({state}) {
-        large_library.librarylist[state.$data.id].$data.version_select = state.$data.version_select
-        new mdui.Select(large_library.librarylist[state.$data.id].$refs.vlist,{}).handleUpdate()
+        switchState(state).$data.version_select = state.$data.version_select
+        new mdui.Select(switchState(state).$refs.vlist,{}).handleUpdate()
       }
     }
   }))
