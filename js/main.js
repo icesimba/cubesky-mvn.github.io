@@ -69,7 +69,8 @@ const ef_template = ef.t`
     .{{name}}
   >td
     >span.{{disabled}}
-      >select.mdui-select
+      >select.mdui-select#vlist
+        @closed&.mdui&.select = vSync
         %value = {{version_select}}
         #id = vlist-lg-{{id}}
         #mdui-select
@@ -125,7 +126,8 @@ const ef_template_sm = ef.t`
         >strong
           .Version: 
         >span.{{disabled}}
-          >select.mdui-select
+          >select.mdui-select#vlist
+            @closed&.mdui&.select = vSync
             %value = {{version_select}}
             #id = vlist-sm-{{id}}
             #mdui-select
@@ -232,6 +234,12 @@ for (var i = 0; i < dataStore.length; i++) {
       latest: latest,
       maven_other: maven_other,
       gradle_other: gradle_other
+    },
+    $methods: {
+      vSync ({state}) {
+        small_library.librarylist[state.$data.id].$data.version_select = state.$data.version_select
+        new mdui.Select(small_library.librarylist[state.$data.id].$refs.vlist,{}).handleUpdate()
+      }
     }
   }))
   small_library.librarylist.push(new ef_template_sm({
@@ -251,6 +259,12 @@ for (var i = 0; i < dataStore.length; i++) {
       latest: latest,
       maven_other: maven_other,
       gradle_other: gradle_other
+    },
+    $methods: {
+      vSync ({state}) {
+        large_library.librarylist[state.$data.id].$data.version_select = state.$data.version_select
+        new mdui.Select(large_library.librarylist[state.$data.id].$refs.vlist,{}).handleUpdate()
+      }
     }
   }))
   for (var v = (data.version.length - 1); v >= 0; v--) {
