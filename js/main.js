@@ -227,8 +227,7 @@ for (var i = 0; i < dataStore.length; i++) {
     gradle_other = ''
     maven_other = ''
   }
-  large_library.librarylist.push(new ef_template({
-    $data: {
+  var listdata = {
       project: data.project,
       group: data.group,
       name: data.name,
@@ -244,7 +243,9 @@ for (var i = 0; i < dataStore.length; i++) {
       latest: latest,
       maven_other: maven_other,
       gradle_other: gradle_other
-    },
+  }
+  large_library.librarylist.push(new ef_template({
+    $data: listdata,
     $methods: {
       vSync ({state}) {
         switchState(state).$data.version_select = state.$data.version_select
@@ -253,23 +254,7 @@ for (var i = 0; i < dataStore.length; i++) {
     }
   }))
   small_library.librarylist.push(new ef_template_sm({
-    $data: {
-      project: data.project,
-      group: data.group,
-      name: data.name,
-      type: data.type,
-      description: data.description,
-      source: data.source,
-      url: data.url,
-      license_url: data.license.url,
-      license_fullname: data.license.fullname,
-      license_name: data.license.name,
-      id: i,
-      disabled: disabled,
-      latest: latest,
-      maven_other: maven_other,
-      gradle_other: gradle_other
-    },
+    $data: listdata,
     $methods: {
       vSync ({state}) {
         switchState(state).$data.version_select = state.$data.version_select
