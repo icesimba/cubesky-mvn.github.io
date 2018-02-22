@@ -48,6 +48,16 @@ const dataStore = [{
     type: 'jar',
     license: 'MIT',
     version: ['1.0']
+}, {
+    project: 'Easy Android BLE',
+    group: 'party.liyin',
+    name: 'easyble',
+    url: '',
+    description: 'A library written in Java and Kotlin to make your Android BLE connect easiler',
+    source: 'Github',
+    type: 'aar',
+    license: 'MIT',
+    version: []
 }]
 var licenseData = {
   'GPLv3': {
