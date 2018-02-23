@@ -58,11 +58,24 @@ const dataStore = [{
     type: 'aar',
     license: 'MIT',
     version: []
+}, {
+    project: 'Flazr',
+    group: 'org.flazr',
+    name: 'library',
+    url: 'https://github.com/cubesky/FlazrLibrary',
+    description: 'Flazr Streaming Library',
+    source: 'Github',
+    type: 'jar',
+    license: 'LGPLv3',
+    version: ['1.0']
 }]
 var licenseData = {
   'GPLv3': {
     url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0'
-  },
+  },,
+  'LGPLv3': {
+    url: 'https://www.gnu.org/licenses/lgpl-3.0.en.html', fullname: 'GNU Lesser General Public License v3.0'
+  }
   'AGPLv3': {
     url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0'
   },
