@@ -59,7 +59,7 @@ const dataStore = [{
     license: 'MIT',
     version: []
 }, {
-    project: 'Flazr',
+    project: 'Flazr Library',
     group: 'org.flazr',
     name: 'library',
     url: 'https://github.com/cubesky/FlazrLibrary',
