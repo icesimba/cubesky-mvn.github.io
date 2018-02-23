@@ -72,7 +72,7 @@ const dataStore = [{
 var licenseData = {
   'GPLv3': {
     url: 'https://www.gnu.org/licenses/gpl-3.0.en.html#content', fullname: 'The GNU General Public License v3.0'
-  },,
+  },
   'LGPLv3': {
     url: 'https://www.gnu.org/licenses/lgpl-3.0.en.html', fullname: 'GNU Lesser General Public License v3.0'
   },
