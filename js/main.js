@@ -75,7 +75,7 @@ var licenseData = {
   },,
   'LGPLv3': {
     url: 'https://www.gnu.org/licenses/lgpl-3.0.en.html', fullname: 'GNU Lesser General Public License v3.0'
-  }
+  },
   'AGPLv3': {
     url: 'https://www.gnu.org/licenses/agpl-3.0.en.html', fullname: 'GNU Affero General Public License v3.0'
   },
