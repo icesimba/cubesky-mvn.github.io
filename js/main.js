@@ -7,7 +7,7 @@ const dataStore = [{
     source: 'Icesimba',
     type: 'aar',
     license: 'Unauthorized',
-    version: ['0.1', '0.2']
+    version: ['0.1', '0.2', '0.3']
 }]
 var licenseData = {
   'GPLv3': {
