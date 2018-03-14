@@ -1,13 +1,13 @@
 const dataStore = [{
-    project: '',
-    group: '',
-    name: '',
-    url: '',
-    description: '',
-    source: '',
-    type: 'jar',
-    license: '',
-    version: []
+    project: 'PolySDKAnalytics',
+    group: 'com.icesimba.polysdk',
+    name: 'polysdkanalytics',
+    url: 'http://www.icesimba.com',
+    description: 'PolySDK Analytic Module',
+    source: 'Unauthorized',
+    type: 'aar',
+    license: 'CloseSource',
+    version: ['0.1']
 }]
 var licenseData = {
   'GPLv3': {
@@ -24,6 +24,9 @@ var licenseData = {
   },
   'MIT': {
     url: 'https://opensource.org/licenses/MIT', fullname: 'MIT License'
+  },
+  'Unauthorized': {
+    url: 'http://www.icesimba.com', fullname: 'Copyright (C) Icesimba - All Rights Reserved'
   }
 }
 const ef_table_template = ef.t`
