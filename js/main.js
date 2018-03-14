@@ -4,7 +4,7 @@ const dataStore = [{
     name: 'polysdkanalytics',
     url: 'http://www.icesimba.com',
     description: 'PolySDK Analytic Module',
-    source: 'Unauthorized',
+    source: 'Icesimba',
     type: 'aar',
     license: 'Unauthorized',
     version: ['0.1']
