@@ -6,7 +6,7 @@ const dataStore = [{
     description: 'PolySDK Analytic Module',
     source: 'Unauthorized',
     type: 'aar',
-    license: 'CloseSource',
+    license: 'Unauthorized',
     version: ['0.1']
 }]
 var licenseData = {
