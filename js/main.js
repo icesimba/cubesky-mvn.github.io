@@ -1,73 +1,13 @@
 const dataStore = [{
-    project: 'Socket Channel',
-    group: 'party.liyin',
-    name: 'socketchannel',
-    url: 'https://github.com/cubesky/SocketChannel',
-    description: 'Easy TCP/UDP transport',
-    source: 'Github',
-    type: 'jar',
-    license: 'GPLv3',
-    version: ['1.0', '2.0', '2.1', '3.0']
-}, {
-    project: 'Gobang Board',
-    group: 'party.liyin',
-    name: 'gobangboard',
-    url: 'https://github.com/cubesky/GobangBoard',
-    description: 'A gobang game board management library written in Kotlin',
-    source: 'Github',
-    type: 'jar',
-    license: 'AGPLv3',
-    version: ['1.0', '2.0']
-}, {
-    project: 'Protocol Data Router',
-    group: 'party.liyin',
-    name: 'protocolrouter',
-    url: 'https://github.com/cubesky/ProtocolRouter',
-    description: 'A Library written in kotlin to transform low-level data byte array to Protocol with mark and route them to another system',
-    source: 'Github',
-    type: 'jar',
-    license: 'Apache 2.0',
-    version: ['0.1']
-}, {
-    project: 'Easy Wifi P2P',
-    group: 'party.liyin',
-    name: 'easywifip2p',
-    url: 'https://github.com/cubesky/EasyWifiP2P',
-    description: 'A Library written in Kotlin and Java to make your Android WifiDirect Easiler',
-    source: 'Github',
-    type: 'aar',
-    license: 'MIT',
-    version: ['1.0', '2.0','2.1','2.2']
-}, {
-    project: 'Multicast Helper',
-    group: 'party.liyin',
-    name: 'multicasthelper',
-    url: 'https://github.com/cubesky/MulticastHelper',
-    description: 'A Java library to make your multicast easiler',
-    source: 'Github',
-    type: 'jar',
-    license: 'MIT',
-    version: ['1.0']
-}, {
-    project: 'Easy Android BLE',
-    group: 'party.liyin',
-    name: 'easyble',
+    project: '',
+    group: '',
+    name: '',
     url: '',
-    description: 'A library written in Java and Kotlin to make your Android BLE connect easiler',
-    source: 'Github',
-    type: 'aar',
-    license: 'MIT',
-    version: []
-}, {
-    project: 'Flazr Library',
-    group: 'org.flazr',
-    name: 'library',
-    url: 'https://github.com/cubesky/FlazrLibrary',
-    description: 'Flazr Streaming Library',
-    source: 'Github',
+    description: '',
+    source: '',
     type: 'jar',
-    license: 'LGPLv3',
-    version: ['1.0']
+    license: '',
+    version: []
 }]
 var licenseData = {
   'GPLv3': {
@@ -214,12 +154,12 @@ const ef_template_version = ef.t`
   .{{version}}
 `
 const maven_repo = `<repository>
-  <id>cubesky-mvn</id>
-  <name>CubeSkyMVN</name>
-  <url>https://cubesky-mvn.github.io</url>
+  <id>icesimba</id>
+  <name>Icesimba</name>
+  <url>https://icesimba.github.io</url>
 </repository>`
 const gradle_repo = `maven {
-  url 'https://cubesky-mvn.github.io'
+  url 'https://icesimba.github.io'
 }`
 var $$ = mdui.JQ
 var copyDialog = new mdui.Dialog('#copy-dialog', { history: false });
